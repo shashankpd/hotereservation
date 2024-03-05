@@ -1,0 +1,34 @@
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        HotelReservation Reservation = new HotelReservation();
+
+        Reservation.AddHotel("Lakewood", 3);
+        Reservation.AddHotel("Bridgewood", 4);
+        Reservation.AddHotel("Ridgewood", 5);
+
+        Reservation.SetRates("Lakewood", 110, 90, 80, 80);
+        Reservation.SetRates("Bridgewood", 160, 60, 110, 50);
+        Reservation.SetRates("Ridgewood", 220, 150, 100, 40);
+
+        try
+        {
+            Console.WriteLine("Enter Customer Type (Regular/Rewards):");
+            string customerType = Console.ReadLine();
+
+            Console.WriteLine("Enter start date (dd/MM/yyyy):");
+            DateTime startDate = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
+
+            Console.WriteLine("Enter the end date (dd/MM/yyyy):");
+            DateTime endDate = DateTime.ParseExact(Console.ReadLine(), "dd/MM/yyyy", null);
+
+            string cheapestBestRatedHotel = Reservation.FindCheapestBestRatedHotel(customerType, startDate, endDate);
+            Console.WriteLine(cheapestBestRatedHotel);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error: " + ex.Message);
+        }
+    }
+}
