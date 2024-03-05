@@ -1,0 +1,26 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+public class Hotel
+{
+    public string Name { get; set; }
+    public int Rating { get; set; }
+    public Dictionary<string, int> Rates { get; set; }
+
+    public Hotel(string name, int rating)
+    {
+        Name = name;
+        Rating = rating;
+        Rates = new Dictionary<string, int>();
+    }
+}
+
+public class HotelReservation
+{
+    private List<Hotel> hotels = new List<Hotel>();
+
+    public void AddHotel(string name, int rating)
+    {
+        hotels.Add(new Hotel(name, rating));
+    }
