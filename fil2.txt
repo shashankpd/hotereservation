@@ -1,0 +1,12 @@
+ public void SetRates(string hotelname, int weekdayRegularRate, int weekendRegularRate, int weekDayRewaerdRate, int weekendReawardRate)
+ {
+     var hotel = hotels.Find(h => h.Name == hotelname);
+
+     if (hotel != null)
+     {
+         hotel.Rates["RegularWeekday"] = weekdayRegularRate;
+         hotel.Rates["RegularWeekend"] = weekendRegularRate;
+         hotel.Rates["RewardsWeekday"] = weekDayRewaerdRate;
+         hotel.Rates["RewardsWeekend"] = weekendReawardRate;
+     }
+ }
