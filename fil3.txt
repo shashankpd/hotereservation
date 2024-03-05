@@ -1,0 +1,46 @@
+    public string FindCheapestBestRatedHotel(string customerType, DateTime startDate, DateTime endDate)
+    {
+        if (customerType != "Regular" && customerType != "Rewards")
+            throw new ArgumentException("Invalid customer Type");
+
+        if (endDate < startDate)
+            throw new ArgumentException("End date cannot be before start Date");
+
+        var validHotels = hotels.Where(h => h.Rates.ContainsKey(customerType + "Weekday") && h.Rates.ContainsKey(customerType + "Weekend"));
+
+        if (!validHotels.Any())
+            throw new ArgumentException($"Rates for {customerType} customer are not set for any hotel");
+
+        var totalRates = new Dictionary<string, int>();
+
+        foreach (var hotel in validHotels)
+        {
+            int totalRate = 0;
+
+            for (DateTime date = startDate; date <= endDate; date = date.AddDays(1))
+            {
+                string rateType = (date.DayOfWeek == DayOfWeek.Saturday || date.DayOfWeek == DayOfWeek.Sunday) ? "Weekend" : "Weekday";
+                string customerRateType = customerType + rateType;
+
+                // Adjust rateType based on customer type
+                if (customerType == "Regular" && rateType == "Weekday")
+                    customerRateType = "RegularWeekday";
+                else if (customerType == "Regular" && rateType == "Weekend")
+                    customerRateType = "RegularWeekend";
+                else if (customerType == "Rewards" && rateType == "Weekday")
+                    customerRateType = "RewardsWeekday";
+                else if (customerType == "Rewards" && rateType == "Weekend")
+                    customerRateType = "RewardsWeekend";
+
+                totalRate += hotel.Rates[customerRateType];
+            }
+
+            totalRates[hotel.Name] = totalRate;
+        }
+
+        var cheapestHotel = totalRates.OrderBy(x => x.Value).First();
+        var bestRatedHotel = hotels.First(h => h.Name == cheapestHotel.Key);
+
+        return $"{bestRatedHotel.Name}, Rating: {bestRatedHotel.Rating}, Total Rates: ${cheapestHotel.Value}";
+    }
+}
